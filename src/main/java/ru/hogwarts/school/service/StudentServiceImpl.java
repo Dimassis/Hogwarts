@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class StudentServiceImpl {
+public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private final StudentRepository studentRepository;
@@ -21,14 +19,17 @@ public class StudentServiceImpl {
         this.studentRepository = studentRepository;
     }
 
+    @Override
     public List<Student> getStudents() {
         return new ArrayList<>(studentRepository.findAll());
     }
 
+    @Override
     public Student getStudent(long id) {
         return studentRepository.findById(id).get();
     }
 
+    @Override
     public List<Student> getStudentsByAge(int age) {
         return studentRepository.findAll()
                 .stream()
@@ -36,10 +37,12 @@ public class StudentServiceImpl {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
 
+    @Override
     public Student updateStudent(long id, Student student) {
         Optional<Student> existingStudent = studentRepository.findById(id);
 
@@ -54,7 +57,8 @@ public class StudentServiceImpl {
         return studentRepository.save(studentToUpdate);
     }
 
-    public void deleteStudent(Long id) {
+    @Override
+    public void deleteStudent(long id) {
         studentRepository.deleteById(id);
     }
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class FacultyServiceImpl {
+public class FacultyServiceImpl implements FacultyService {
 
     @Autowired
     private final FacultyRepository facultyRepository;
@@ -20,14 +20,17 @@ public class FacultyServiceImpl {
         this.facultyRepository = facultyRepository;
     }
 
-    public Faculty getfaculty(long id) {
+    @Override
+    public Faculty getFaculty(long id) {
         return facultyRepository.findById(id).get();
     }
 
+    @Override
     public ArrayList<Faculty> getFaculties() {
         return new ArrayList<Faculty>(facultyRepository.findAll());
     }
 
+    @Override
     public List<Faculty> getFacultiesByColor(String color) {
         return facultyRepository.findAll()
                 .stream()
@@ -35,10 +38,12 @@ public class FacultyServiceImpl {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Faculty addfaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 
+    @Override
     public Faculty updatefaculty(Faculty faculty) {
         Optional<Faculty> expectFaculty = facultyRepository.findById(faculty.getId());
 
@@ -54,6 +59,7 @@ public class FacultyServiceImpl {
 
     }
 
+    @Override
     public void deleteFaculty(Long id) {
         facultyRepository.deleteById(id);
     }
