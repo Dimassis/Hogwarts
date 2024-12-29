@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudents() {
-        return new ArrayList<>(studentRepository.findAll());
+        return studentRepository.findAll();
     }
 
     @Override
@@ -62,4 +62,15 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteById(id);
     }
 
+    public Collection<Student> findStudentByName (String name) {
+         return studentRepository.findStudentsByNameIgnoreCase(name);
+    }
+
+    public Collection<Student> findByPartName(String part) {
+        return studentRepository.findAllByNameContainsIgnoreCase(part);
+    }
+
+    public Collection<Student> findAllByBetweenAge(Integer age1, Integer age2) {
+        return studentRepository.findAllByAgeBetween(age1, age2);
+    }
 }

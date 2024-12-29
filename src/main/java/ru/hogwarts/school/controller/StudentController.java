@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentServiceImpl;
+
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -23,8 +26,22 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.getStudents();
+    public ResponseEntity<Collection<Student>>  getAllStudents(@RequestParam(required = false) String name,
+                                                               @RequestParam(required = false) Integer ageMin,
+                                                               @RequestParam(required = false) Integer ageMax,
+                                                               @RequestParam(required = false) String part) {
+       if(name != null && !name.isBlank()) {
+           return ResponseEntity.ok(studentService.findStudentByName(name));
+       }
+
+       if(ageMin != null && ageMax != null && ageMin <= ageMax) {
+           return ResponseEntity.ok(studentService.findAllByBetweenAge(ageMin, ageMax));
+       }
+
+       if(part != null && !part.isBlank()) {
+           return ResponseEntity.ok(studentService.findByPartName(part));
+       }
+        return ResponseEntity.ok(studentService.getStudents());
     }
 
     @GetMapping("{id}")
