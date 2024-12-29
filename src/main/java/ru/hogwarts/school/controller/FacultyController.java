@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyServiceImpl;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("faculty")
@@ -35,12 +35,20 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ArrayList<Faculty> getAllFaculties() {
-        return facultyService.getFaculties();
+    public ResponseEntity<Collection<Faculty>>  getAllFaculties(@RequestParam(required = false) String name,
+                                                                @RequestParam(required = false) String color) {
+        if(name != null && !name.isEmpty()) {
+            return ResponseEntity.ok(facultyService.getFacultiesByName(name));
+        }
+        if(color != null && !color.isEmpty()) {
+            return ResponseEntity.ok(facultyService.getFacultiesByColor(color));
+        }
+
+        return ResponseEntity.ok(facultyService.getFaculties());
     }
 
     @GetMapping("faculty/{faculty}")
-    public List<Faculty> getAllFaculty(@PathVariable String faculty) {
+    public Collection<Faculty> getAllFaculty(@PathVariable String faculty) {
         return facultyService.getFacultiesByColor(faculty);
     }
 

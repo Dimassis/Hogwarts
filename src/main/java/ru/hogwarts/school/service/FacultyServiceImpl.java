@@ -1,14 +1,14 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -26,16 +26,8 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public ArrayList<Faculty> getFaculties() {
-        return new ArrayList<Faculty>(facultyRepository.findAll());
-    }
-
-    @Override
-    public List<Faculty> getFacultiesByColor(String color) {
-        return facultyRepository.findAll()
-                .stream()
-                .filter(entry -> entry.getColor().equals(color))
-                .collect(Collectors.toList());
+    public Collection<Faculty> getFaculties() {
+        return facultyRepository.findAll();
     }
 
     @Override
@@ -62,5 +54,15 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public void deleteFaculty(Long id) {
         facultyRepository.deleteById(id);
+    }
+
+    @Override
+    public Collection<Faculty> getFacultiesByName(String name) {
+        return facultyRepository.findByNameIgnoreCase(name);
+    }
+
+    @Override
+    public Collection<Faculty> getFacultiesByColor(String color) {
+        return facultyRepository.findByColorIgnoreCase(color);
     }
 }
