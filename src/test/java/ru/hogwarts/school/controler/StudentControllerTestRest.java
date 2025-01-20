@@ -44,9 +44,7 @@ class StudentControllerTestRest {
 
         String url = "http://localhost:" + port + "/student";
 
-
         ResponseEntity<Student> response = restTemplate.postForEntity(url, student, Student.class);
-
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getName()).isEqualTo(student.getName());

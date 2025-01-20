@@ -121,14 +121,20 @@ public class FacultyControllerTestRest {
         newFaculty.setId(99L);
         newFaculty.setName("Test Faculty");
         newFaculty.setColor("yellow");
-        facultyRepository.save(newFaculty);
 
-        Assertions.assertThat(facultyRepository.findAll()).hasSize(initialCount + 1);
-        Assertions.assertThat(facultyRepository.findById(newFaculty.getId())).isNotNull();
-        Assertions.assertThat(facultyRepository.findByNameIgnoreCase(newFaculty.getName())).isNotNull();
-        Assertions.assertThat(facultyRepository.findByColorIgnoreCase(newFaculty.getColor())).isNotNull();
+        String url = "http://localhost:" + port + "/student";
 
-        facultyRepository.delete(newFaculty);
+        ResponseEntity<Faculty> responseEntity = testRestTemplate.postForEntity(
+                url,
+                newFaculty,
+                Faculty.class
+        );
+
+        Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(responseEntity.getBody()).isNotNull();
+        Assertions.assertThat(responseEntity.getBody().getName()).isEqualTo(newFaculty.getName());
+
+
     }
     @Test
     public void testUpdateFaculty() throws Exception {
