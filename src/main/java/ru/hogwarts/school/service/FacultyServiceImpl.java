@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -14,7 +12,7 @@ import java.util.Optional;
 public class FacultyServiceImpl implements FacultyService {
 
     @Autowired
-    private final FacultyRepository facultyRepository;
+    private FacultyRepository facultyRepository;
 
     public FacultyServiceImpl(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;

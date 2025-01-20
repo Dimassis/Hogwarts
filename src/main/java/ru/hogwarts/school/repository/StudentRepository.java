@@ -8,12 +8,12 @@ import java.util.Collection;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-
     Student findByName(String name);
     Collection<Student> findStudentsByNameIgnoreCase(String name);
 
     Collection<Student> findAllByNameContainsIgnoreCase(String part);
 
+    Collection<Student> findByAge(int age);
 
     Collection<Student> findAllByAgeBetween(Integer min, Integer max);
 
