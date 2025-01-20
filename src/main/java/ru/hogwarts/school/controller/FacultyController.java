@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.FacultyServiceImpl;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,9 +21,9 @@ import java.util.Collection;
 @RestController
 @RequestMapping("faculty")
 public class FacultyController {
-    private final FacultyServiceImpl facultyService;
+    private final FacultyService facultyService;
 
-    public FacultyController(FacultyServiceImpl facultyService) {
+    public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
     }
 
@@ -53,8 +55,8 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty faculty) {
-        return facultyService.addfaculty(faculty);
+    public ResponseEntity<Faculty> createFaculty(@Valid @RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.addfaculty(faculty));
     }
 
     @PutMapping

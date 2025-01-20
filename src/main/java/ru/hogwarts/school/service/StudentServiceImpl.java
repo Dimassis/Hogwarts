@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
@@ -12,9 +13,9 @@ import java.util.stream.Collectors;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    @Autowired
     private final StudentRepository studentRepository;
 
+    @Autowired
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -25,8 +26,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student getStudent(long id) {
-        return studentRepository.findById(id).get();
+    public Student getStudent(Long studentId) {
+        return studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + studentId));
     }
 
     @Override
@@ -43,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student updateStudent(long id, Student student) {
+    public Student updateStudent(Long id, Student student) {
         Optional<Student> existingStudent = studentRepository.findById(id);
 
         if (existingStudent.isEmpty()) {
@@ -58,12 +60,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudent(long id) {
+    public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }
 
-    public Collection<Student> findStudentByName (String name) {
-         return studentRepository.findStudentsByNameIgnoreCase(name);
+    public Collection<Student> findStudentByName(String name) {
+        return studentRepository.findStudentsByNameIgnoreCase(name);
     }
 
     public Collection<Student> findByPartName(String part) {
