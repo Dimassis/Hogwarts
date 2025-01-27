@@ -64,18 +64,33 @@ public class StudentController {
         return studentService.addStudent(student);
     }
 
-@PutMapping
-public ResponseEntity<Student> update(@RequestBody Student student) {
-    if (student.getId() == null) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @PutMapping
+    public ResponseEntity<Student> update(@RequestBody Student student) {
+        if (student.getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Student updatedStudent = studentService.updateStudent(student.getId(), student);
+        return ResponseEntity.ok(updatedStudent);
     }
-    Student updatedStudent = studentService.updateStudent(student.getId(), student);
-    return ResponseEntity.ok(updatedStudent);
-}
 
-@DeleteMapping("{id}")
-public ResponseEntity<Student> delete(@PathVariable long id) {
-    studentService.deleteStudent(id);
-    return ResponseEntity.ok().build();
-}
+    @DeleteMapping("{id}")
+    public ResponseEntity<Student> delete(@PathVariable long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/count")
+    public Integer getCountStudents() {
+        return studentService.getCountStudents();
+    }
+
+    @GetMapping("/avg")
+    public Double getAverageStudents() {
+        return studentService.avgAgeStudents();
+    }
+
+    @GetMapping("/limit")
+    public List<Student> getLimitStudents() {
+        return studentService.limitStudents();
+    }
 }

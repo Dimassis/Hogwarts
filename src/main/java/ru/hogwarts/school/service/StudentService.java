@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
@@ -24,4 +25,10 @@ public interface StudentService {
     Collection<Student> findByPartName(String part);
 
     Collection<Student> findAllByBetweenAge(Integer age1, Integer age2);
-    }
+
+    Integer getCountStudents();
+
+    Double avgAgeStudents();
+
+    List<Student> limitStudents();
+}
