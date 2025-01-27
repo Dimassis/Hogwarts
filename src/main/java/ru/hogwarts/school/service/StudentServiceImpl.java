@@ -26,6 +26,21 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Integer getCountStudents() {
+        return studentRepository.countStudents();
+    }
+
+    @Override
+    public Double avgAgeStudents() {
+        return studentRepository.avgStudents();
+    }
+
+    @Override
+    public List<Student> limitStudents() {
+        return studentRepository.limitStudents();
+    }
+
+    @Override
     public Student getStudent(Long studentId) {
         return studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + studentId));
