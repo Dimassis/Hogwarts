@@ -1,8 +1,9 @@
-CREATE TABLE person (
+CREATE TABLE Person (
                         id SERIAL PRIMARY KEY,
                         name VARCHAR(100) NOT NULL,
                         age INT CHECK (age >= 0),
-                        has_license BOOLEAN NOT NULL DEFAULT FALSE
+                        has_license BOOLEAN NOT NULL DEFAULT FALSE,
+                        car_id INT REFERENCES Car(id) -- Внешний ключ на машину
 );
 
 CREATE TABLE Car (
@@ -10,10 +11,4 @@ CREATE TABLE Car (
                      brand VARCHAR(100) NOT NULL,
                      model VARCHAR(100) NOT NULL,
                      price DECIMAL(10, 2) NOT NULL
-);
-
-CREATE TABLE PersonCar (
-                           person_id INT REFERENCES Person(id),
-                           car_id INT REFERENCES Car(id),
-                           PRIMARY KEY (person_id, car_id)
 );
