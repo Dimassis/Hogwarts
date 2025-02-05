@@ -3,7 +3,7 @@ CREATE TABLE Person (
                         name VARCHAR(100) NOT NULL,
                         age INT CHECK (age >= 0),
                         has_license BOOLEAN NOT NULL DEFAULT FALSE,
-                        car_id INT REFERENCES Car(id)
+                        car_id INT REFERENCES Car(id) -- Внешний ключ на машину
 );
 
 CREATE TABLE Car (
