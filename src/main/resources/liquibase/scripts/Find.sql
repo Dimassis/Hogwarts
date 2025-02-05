@@ -1,10 +1,12 @@
 -- liquibase formatted sql
 
 -- changeset Dmitry:1
-SELECT name
-from students;
+CREATE
+    INDEX student_name_idx
+    ON students(name);
 
 -- changeset Dmitry:2
-SELECT name, color
-from faculties
+CREATE
+    INDEX faculty_name_color_idx
+    ON faculties(name, color);
 
