@@ -1,12 +1,7 @@
--- liquibase formatted sql
-
--- changeset Dmitry:1
-CREATE
-    INDEX student_name_idx
-    ON students(name);
-
--- changeset Dmitry:2
-CREATE
-    INDEX faculty_name_color_idx
-    ON faculties(name, color);
-
+DO $$
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'student_name_idx') THEN
+            CREATE INDEX student_name_idx ON students(name);
+        END IF;
+    END
+$$;

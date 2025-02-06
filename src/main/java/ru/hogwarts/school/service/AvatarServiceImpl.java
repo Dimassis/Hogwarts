@@ -95,15 +95,18 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private String getExtension(String fileName) {
+        logger.info("get extension: " + fileName);
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     public Avatar findAvatar(Long studentId) {
+        logger.info("find avatar: " + studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     @Override
     public Page<Avatar> getAllAvatars(int page, int size) {
+        logger.info("get all avatars: " + page);
         Pageable pageable = PageRequest.of(page, size);
         return avatarRepository.findAll(pageable);
     }

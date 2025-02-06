@@ -53,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             return studentRepository.findById(studentId);
         }catch (EntityNotFoundException e) {
-            logger.info("Student not found with ID: {}", studentId);
+            logger.warn("Student not found with ID: {}", studentId);
              throw new EntityNotFoundException("Student not found with ID: " + studentId);
         }
     }
@@ -97,14 +97,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Collection<Student> findStudentByName(String name) {
+        logger.info("Find student by name:");
         return studentRepository.findStudentsByNameIgnoreCase(name);
     }
 
     public Collection<Student> findByPartName(String part) {
+        logger.info("Find student by part name:");
         return studentRepository.findAllByNameContainsIgnoreCase(part);
     }
 
     public Collection<Student> findAllByBetweenAge(Integer age1, Integer age2) {
+        logger.info("Find student by between age:");
         return studentRepository.findAllByAgeBetween(age1, age2);
     }
 }
