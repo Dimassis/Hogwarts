@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,8 @@ import java.util.Collection;
 @Service
 @Transactional
 public class AvatarServiceImpl implements AvatarService {
+    private static final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
+
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
@@ -49,6 +53,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Uploading avatar file: " + avatarFile.getOriginalFilename());
         Student student = studentRepository.findById(studentId).orElse(null);
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -72,6 +77,7 @@ public class AvatarServiceImpl implements AvatarService {
 
 
     private byte[] generateDataForDB(Path filePath) throws IOException {
+        logger.info("Generating data for " + filePath);
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {

@@ -1,10 +1,13 @@
 package ru.hogwarts.school.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -22,32 +26,41 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getStudents() {
+        logger.info("Get all students");
         return studentRepository.findAll();
     }
 
     @Override
     public Integer getCountStudents() {
+        logger.info("Get count students");
         return studentRepository.countStudents();
     }
 
     @Override
     public Double avgAgeStudents() {
+        logger.info("Get avg age students");
         return studentRepository.avgStudents();
     }
 
     @Override
     public List<Student> limitStudents() {
+        logger.info("Get limit students");
         return studentRepository.limitStudents();
     }
 
     @Override
-    public Student getStudent(Long studentId) {
-        return studentRepository.findById(studentId)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + studentId));
+    public Optional<Student> getStudent(Long studentId) {
+        try {
+            return studentRepository.findById(studentId);
+        }catch (EntityNotFoundException e) {
+            logger.info("Student not found with ID: {}", studentId);
+             throw new EntityNotFoundException("Student not found with ID: " + studentId);
+        }
     }
 
     @Override
     public List<Student> getStudentsByAge(int age) {
+        logger.info("Get student by age: {}", age);
         return studentRepository.findAll()
                 .stream()
                 .filter(student -> student.getAge() == age)
@@ -56,14 +69,17 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student addStudent(Student student) {
+        logger.info("Add student: {}", student);
         return studentRepository.save(student);
     }
 
     @Override
     public Student updateStudent(Long id, Student student) {
+        logger.info("Update student: {}", student);
         Optional<Student> existingStudent = studentRepository.findById(id);
 
         if (existingStudent.isEmpty()) {
+            logger.warn("Student not found with ID: {}", id);
             return null;
         }
 
@@ -76,6 +92,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(Long id) {
+        logger.info("Delete student: {}", id);
         studentRepository.deleteById(id);
     }
 
