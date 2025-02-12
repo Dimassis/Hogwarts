@@ -3,11 +3,11 @@ package ru.hogwarts.school.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -71,5 +71,14 @@ public class FacultyServiceImpl implements FacultyService {
     public Collection<Faculty> getFacultiesByColor(String color) {
         logger.info("get faculties by color: ");
         return facultyRepository.findByColorIgnoreCase(color);
+    }
+
+    @Override
+    public Optional<Faculty> getFacultyTheLongestName() {
+        logger.info("get most long name");
+        return facultyRepository
+                .findAll()
+                .stream()
+                .max(Comparator.comparingInt(faculty -> faculty.getName().length()));
     }
 }

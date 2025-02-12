@@ -17,6 +17,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/student")
@@ -93,5 +94,18 @@ public class StudentController {
     @GetMapping("/limit")
     public List<Student> getLimitStudents() {
         return studentService.limitStudents();
+    }
+
+    @GetMapping("/sortByAlphabet")
+    public List<Student> getSortStudentsByAlphabet() {
+        return studentService.sortStudentsByAlphabet();
+    }
+
+    @GetMapping("/api")
+    public int getApiStudents() {
+        return IntStream
+                .rangeClosed(1, 1_000_000)
+                .parallel()
+                .sum();
     }
 }
