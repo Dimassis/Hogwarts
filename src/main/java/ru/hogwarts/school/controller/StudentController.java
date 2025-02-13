@@ -102,10 +102,24 @@ public class StudentController {
     }
 
     @GetMapping("/api")
-    public int getApiStudents() {
-        return IntStream
+    public String getApiStudents() {
+        long start = System.nanoTime();
+
+        int sum = IntStream
                 .rangeClosed(1, 1_000_000)
+                .sum();
+        long end = System.nanoTime();
+        return "API time: " + (end - start) + "ms " + sum;
+    }
+
+    @GetMapping("/apiUp")
+    public String getApiUpStudents() {
+        long start = System.nanoTime();
+        int sum = IntStream.rangeClosed(1, 1_000_000)
                 .parallel()
                 .sum();
+        long end = System.nanoTime();
+        return "API time: " + (end - start) + "ms " + sum;
     }
+
 }
