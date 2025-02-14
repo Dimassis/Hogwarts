@@ -9,6 +9,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,11 +37,7 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.countStudents();
     }
 
-    @Override
-    public Double avgAgeStudents() {
-        logger.info("Get avg age students");
-        return studentRepository.avgStudents();
-    }
+
 
     @Override
     public List<Student> limitStudents() {
@@ -109,5 +106,22 @@ public class StudentServiceImpl implements StudentService {
     public Collection<Student> findAllByBetweenAge(Integer age1, Integer age2) {
         logger.info("Find student by between age:");
         return studentRepository.findAllByAgeBetween(age1, age2);
+    }
+
+    @Override
+    public List<Student> sortStudentsByAlphabet() {
+        logger.info("Sorting student by alphabet");
+        return studentRepository.findAll()
+                .parallelStream()
+                .sorted(Comparator.comparing(Student::getName))
+                .toList();
+    }
+
+    @Override
+    public Double avgAgeStudents() {
+        logger.info("Get avg age students");
+        return studentRepository.findAll()
+                .parallelStream()
+                .collect(Collectors.averagingDouble(Student::getAge));
     }
 }

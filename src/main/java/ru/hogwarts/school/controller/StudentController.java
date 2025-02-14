@@ -17,6 +17,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/student")
@@ -94,4 +95,31 @@ public class StudentController {
     public List<Student> getLimitStudents() {
         return studentService.limitStudents();
     }
+
+    @GetMapping("/sortByAlphabet")
+    public List<Student> getSortStudentsByAlphabet() {
+        return studentService.sortStudentsByAlphabet();
+    }
+
+    @GetMapping("/api")
+    public String getApiStudents() {
+        long start = System.nanoTime();
+
+        int sum = IntStream
+                .rangeClosed(1, 1_000_000)
+                .sum();
+        long end = System.nanoTime();
+        return "API time: " + (end - start) + "ms " + sum;
+    }
+
+    @GetMapping("/apiUp")
+    public String getApiUpStudents() {
+        long start = System.nanoTime();
+        int sum = IntStream.rangeClosed(1, 1_000_000)
+                .parallel()
+                .sum();
+        long end = System.nanoTime();
+        return "API time: " + (end - start) + "ms " + sum;
+    }
+
 }

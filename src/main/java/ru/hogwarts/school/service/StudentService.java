@@ -31,4 +31,6 @@ public interface StudentService {
     Double avgAgeStudents();
 
     List<Student> limitStudents();
+
+    List<Student> sortStudentsByAlphabet();
 }
